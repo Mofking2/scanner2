@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Barcode Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js" ></script>
+	<!-- include the library -->
+<script defer src="https://unpkg.com/html5-qrcode"></script>
+
+	 <style>
+	 
+		main{
+			  max-width: 1200px;
+			margin: 0 auto;
+			
+			padding: 20px;
+			 display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		
+		}
+
+	 #scanner-section {
+    flex-basis: 70%;
+}
+
+
+#qrBarcode-section {
+    flex-basis: 28%;
+}
+#qrBarcode-section {
+            background-color: #fff;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#scanner-section {
+            background-color: #fff;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+	#results{
+				background-color:green;
+				padding:20px;
+		
+		}
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+		#qr-code{
+			margin-left:30%;
+			margin-right:30%;
+		}
+		#reader {
+		  width: 600px;
+		  padding-left:50%;
+		  padding-right:50%;
+		  
+		}
+        h1 {
+            color: #333;
+        }
+
+        div {
+            margin: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #0074d9;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #barcodeOutput {
+            margin-top: 20px;
+        }
+		@media (max-width: 768px) {
+			#qrBarcode-section{
+				margin-left:auto;
+				margin-right:auto;
+			
+			
+			}
+		
+		
+		}
+		@media (max-width: 576px) {
+			#qrBarcode-section{
+				margin-left:auto;
+			margin-right:auto;
+			
+			}
+			#reader {
+		  width: 400px;
+		  padding-left:auto;
+		  padding-right:auto;
+		  
+		}
+		
+		
+		}
+
+    </style>
+</head>
+<body>
+<h1>QR Code | Barcode Reader and Scanner</h1>
+	<main>
+		
+	<section id="scanner-section">
+
+		<!-- QR SCANNER CODE BELOW  -->
+<div class="row  text-center">
+  <div class="col justify-content-center">
+    <div id="reader" class="text-center" ></div>
+  </div>
+
+
+</div>
+
+	<div class="row" id="content">
+
+  <div class="col" style="padding: 30px; ">
+    <h4>Scan Result </h4>
+        <div id="result">
+      Result goes here
+    </div>
+  </div>
+
+</div>
+	
+	</section>
+
+		<section id="qrBarcode-section" >
+		    <h1>Barcode Generator</h1>
+    <div class="p-3">
+        <label for="barcodeData">Enter Data:</label>
+        <input type="text" id="barcodeData">
+        <button onclick="generateBarcode()">Generate Barcode</button>
+    </div>
+      <div id="barcodeContainer">
+        <svg id="barcodeOutput"></svg>
+        <div id="barcodeNumber"></div>
+    </div>
+	<div class="p-3">
+        <div id="Generate" class="">
+          <h1 class=" text-center">
+            QR Code Generator
+          </h1>
+          <p class="">Enter your Url to generate your QR code</p>
+
+
+          <form id="Form" class="mt-1">
+            <input id="formData"  type="text"  placeholder="Enter your url" class="" />
+            <button id="button" class="" >
+              Generate your QR code
+            </button>
+          </form>
+        </div>
+        
+      </div>
+      <!-- Where the generated QR code will be. -->
+      <div id="qr-code" class=""></div>
+	
+	</section>
+
+
+	
+	
+
+   </main>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	 <script src="barcode.js"></script>
+	<script src="qrcode.js"></script>
+<script  src="https://unpkg.com/html5-qrcode"></script>
+<script>
+		// When scan is successful fucntion will produce data
+function onScanSuccess(qrCodeMessage) {
+  document.getElementById("result").innerHTML =
+    '<span class="result">' + qrCodeMessage + "</span>";
+}
+
+// When scan is unsuccessful fucntion will produce error message
+function onScanError(errorMessage) {
+  // Handle Scan Error
+  
+}
+
+// Setting up Qr Scanner properties
+var html5QrCodeScanner = new Html5QrcodeScanner("reader", {
+  fps: 10,
+  qrbox: 250
+});
+
+// in
+html5QrCodeScanner.render(onScanSuccess, onScanError);
+
+
+
+
+</script>
+</body>
+</html>

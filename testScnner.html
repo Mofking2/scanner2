@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Scanner</title>
+	
+	<style>
+		/* Style the video feed */
+#qr-video {
+    width: 100%; /* Make the video feed occupy the full width of its container */
+    max-width: 800px; /* Set a maximum width to prevent it from becoming too wide */
+    display: block; /* Ensure it's a block-level element */
+    margin: 0 auto; /* Center the video feed horizontally */
+    border: 2px solid #333; /* Add a border for visibility */
+}
+
+/* Style the QR code data display */
+#qr-result {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+}
+
+	</style>
+</head>
+<body>
+    <video id="qr-video" autoplay="true"></video>
+    <pre id="qr-result"></pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.js"></script>
+    <script >
+			const videoElement = document.getElementById('qr-video');
+const resultElement = document.getElementById('qr-result');
+
+// Check for camera support
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (stream) {
+            // Assign the camera stream to the video element
+            videoElement.srcObject = stream;
+        })
+        .catch(function (error) {
+            console.error('Error accessing the camera:', error);
+        });
+} else {
+    console.error('getUserMedia is not supported by this browser');
+}
+
+// Function to continuously scan for QR codes
+const scanQRCode = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+    if (code) {
+        resultElement.textContent = 'QR Code Data: ' + code.data;
+    }
+
+    // Continue scanning
+    requestAnimationFrame(scanQRCode);
+};
+
+// Start scanning for QR codes
+videoElement.onloadedmetadata = () => {
+    videoElement.play();
+    scanQRCode();
+};
+
+	
+	
+	
+	</script>
+</body>
+</html>
